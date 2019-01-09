@@ -16,10 +16,13 @@ set smarttab
 set expandtab
 set laststatus=2
 set backspace=indent,eol,start
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
+set autoread
+let g:syntastic_always_populate_loc_list = 0
+let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastic_go_checkers = ['go', 'golint', 'govet', 'errcheck']
+set relativenumber
 
 "----------------------------------------------------------------------
 " Plugins
@@ -45,6 +48,8 @@ call plug#end()
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'Valloric/YouCompleteMe'
+Plugin 'rdolgushin/groovy.vim'
+Plugin 'posva/vim-vue'
 call vundle#end()
 filetype plugin indent on
 
@@ -53,3 +58,13 @@ filetype plugin indent on
 "----------------------------------------------------------------------
 map <C-o> :NERDTreeToggle<CR>
 map <C-f> :FZF<CR>
+map <C-r> :edit<CR>
+map <C-n> :cnext<CR>
+map <C-m> :cprevious<CR>
+nnoremap <leader>a :cclose<CR>
+
+"----------------------------------------------------------------------
+" Auto highlighting for specific files
+"----------------------------------------------------------------------
+au BufRead,BufNewFile *.vue set filetype=vue.javascript.css
+au BufWritePost *.go :GoBuild

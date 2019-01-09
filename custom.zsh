@@ -1,17 +1,12 @@
 export PATH="$PATH:/Users/michelvocks/work/golang/bin"
 export PATH=$PATH:/usr/local/opt/go/libexec/bin
 export PATH=$PATH:/Users/michelvocks/Library/Python/3.7/bin
+export PATH=/Users/michelvocks/.rbenv/versions/2.5.3/bin:$PATH
 export GOPATH="/Users/michelvocks/work/golang"
 export AWS_DEFAULT_REGION="eu-central-1"
 export PKG_CONFIG_PATH="/Users/michelvocks/work/golang/instantclient_12_2"
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY="YES"
 export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home"
-
-# Source awslogin script
-source $ZSH/custom/awslogin.sh
-
-# Source kube script
-source $ZSH/custom/kubectl_config.sh
 
 alias ll="ls -al"
 alias vim="/usr/local/bin/vim"
@@ -54,6 +49,14 @@ tunnelSPIN() {
         ssh -A -L 9000:localhost:9000 -L 8084:localhost:8084 -L 8087:localhost:8087 ubuntu@$ip
 }
 
+tunnelPARCEL() {
+        aws-ls-ec2|grep parcelbookingsendit
+        ip=`aws-ls-ec2|grep parcelbookingsendit|cut -f 1`
+        [ "$1" = "pr" ] && bastion="management" || bastion="toolbox"
+        echo $ip
+        ssh -A -L 3389:$ip:3389 bastion.$bastion.acdc.signintra.com
+}
+
 k8sN() {
   if [ -n "$1" ]; then
     kubectl config set-context default-context --namespace=$1
@@ -65,6 +68,3 @@ k8sN() {
 
 nges-ro-user-fat(){vault read database/creds/eschenker-fat-oracle}
 nges-ro-user-pr(){vault read database/creds/eschenker-prod-oracle}
-
-# Init jenv
-if which jenv > /dev/null; then eval "$(jenv init -)"; fi
