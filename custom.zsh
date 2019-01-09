@@ -8,6 +8,12 @@ export PKG_CONFIG_PATH="/Users/michelvocks/work/golang/instantclient_12_2"
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY="YES"
 export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home"
 
+# Source awslogin script
+source $ZSH/custom/awslogin.sh
+
+# Source kube script
+source $ZSH/custom/kubectl_config.sh
+
 alias ll="ls -al"
 alias vim="/usr/local/bin/vim"
 alias v="/usr/local/bin/vim"
@@ -18,6 +24,7 @@ alias vsc='function _workit(){ open -a "Visual Studio Code" $1; };_workit'
 alias vpn="sudo openconnect -v -s /etc/vpnc/schenker-vpn-script https://vpnfra.dbschenker.com"
 alias golinux="GOOS=linux GOARCH=amd64 go install"
 alias galaxy='ansible-galaxy install -r requirements.yml -p external'
+alias fgrep='grep -r . -e'
 
 aws-ls-ec2(){
   aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" --query 'Reservations[].Instances[].[PrivateIpAddress,InstanceId,Tags[?Key==`Name`].Value[]]' --output text | grep -v None | sed '$!N;s/\n/ /'|sort -k3
@@ -68,3 +75,6 @@ k8sN() {
 
 nges-ro-user-fat(){vault read database/creds/eschenker-fat-oracle}
 nges-ro-user-pr(){vault read database/creds/eschenker-prod-oracle}
+
+# Init jenv
+if which jenv > /dev/null; then eval "$(jenv init -)"; fi
